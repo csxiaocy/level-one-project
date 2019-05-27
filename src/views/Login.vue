@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: 'Login',
+  name: 'login',
   data () {
     return {
       logining: false,
@@ -56,7 +56,7 @@ export default {
           // });
           if (this.ruleForm.account === 'admin' && this.ruleForm.password === '123456') {
             this.$message({
-              message: '登录成功',
+              message: `欢迎回来${this.ruleForm.account}!`,
               type: 'success'
             })
             sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
