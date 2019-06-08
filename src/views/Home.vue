@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
   <el-row class="container">
 		<el-col :span="24" class="header">
@@ -104,7 +105,8 @@ export default {
     handleselect: function (a, b) {
     },
     collapse: function () {
-      this.collapsed = !this.collapsed
+			// TODO 有bug
+      // this.collapsed = !this.collapsed
     },
     logout: function () {
       const that = this

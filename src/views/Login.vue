@@ -61,7 +61,7 @@ export default {
             })
             sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
             this.logining = false
-            this.$router.push({ path: '/' })
+            this.$router.push({ path: '/dashboard' })
           } else {
             this.$message.error('账号或密码错误')
             this.logining = false

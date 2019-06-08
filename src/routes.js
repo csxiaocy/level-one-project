@@ -24,10 +24,10 @@ let routes = [
     path: '/',
     name: '',
     component: Home,
-    iconCls: 'el-icon-message',
+    iconCls: 'el-icon-data-analysis',
     leaf: true,
     children: [
-      { path: '/dashboard', component: Dashboard, name: 'Dashboard' }
+      { path: '/dashboard', component: Dashboard, name: '数据统计' }
     ]
   },
   {
