@@ -7,9 +7,11 @@
         </el-form-item>
         <el-form-item label="发布时间">
           <el-col :span="11">
-            <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 100%;"></el-date-picker>
+            <el-date-picker type="date" placeholder="选择日期" v-model="form.date"
+            @change="dateFormat" format="yyyy-MM-dd" style="width: 100%;">
+            </el-date-picker>
           </el-col>
-          <el-col class="line" :span="2">-</el-col>
+          <el-col class="line" :span="2">&nbsp;&nbsp;&nbsp;—</el-col>
           <el-col :span="11">
             <el-time-picker placeholder="选择时间" v-model="form.time" style="width: 100%;"></el-time-picker>
           </el-col>
@@ -19,6 +21,7 @@
         </el-form-item>
       </el-form>
     </div>
+    <el-divider style="margin-top: 20px;"><i class="el-icon-time"></i></el-divider>
     <div class="block" style="margin-top: 40px;">
       <el-timeline>
         <el-timeline-item v-for="(notice, index) in noticeList" :key="index" :timestamp="notice.date" placement="top">
@@ -45,25 +48,25 @@ export default {
       },
       noticeList: [
         {
-          date: '2019/6/8',
+          date: '2019-06-08',
           message: '六一儿童节快乐!',
           sender: 'admin',
           time: '03:30',
         },
         {
-          date: '2019/6/7',
+          date: '2019-06-07',
           message: '六一儿童节快乐!',
           sender: 'admin',
           time: '03:30',
         },
         {
-          date: '2019/6/6',
+          date: '2019-06-06',
           message: '六一儿童节快乐!',
           sender: 'admin',
           time: '03:30',
         },
         {
-          date: '2019/6/5',
+          date: '2019-06-05',
           message: '六一儿童节快乐!',
           sender: 'admin',
           time: '03:30',
@@ -72,6 +75,9 @@ export default {
     }
   },
   methods: {
+    dateFormat(date) {
+      this.form.date = date;
+    },
     onSubmit() {
       if (this.form.message === '') {
         this.$message.error('通知内容不能为空');
@@ -85,7 +91,12 @@ export default {
         this.$message.error('时间不能为空');
         return;
       }
-      this.noticeList.splice(0, 0, form);
+      let form = {}
+      form.date = this.form.date;
+      form.message = this.form.message;
+      form.sender = this.form.sender;
+      form.time = this.form.time;
+      this.noticeList.splice(0, 0, this.form);
     }
   }
 }
