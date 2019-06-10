@@ -1,12 +1,16 @@
 <template>
   <div id="background">
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-position="left" label-width="0px" class="demo-ruleForm login-container">
+    <el-form :model="ruleForm" ref="ruleForm" label-position="left" label-width="0px" class="demo-ruleForm login-container">
       <h3 class="title">Admin Login</h3>
-      <el-form-item prod="account">
-        <el-input type="text" v-model="ruleForm.account" autocomplete="off" placeholder="请输入账号"></el-input>
+      <el-form-item prod="account" :rules="[
+        { required: true, message: '账号不能为空', trigger: 'blur' }
+      ]">
+        <el-input type="text" v-model="ruleForm.account" placeholder="请输入账号"></el-input>
       </el-form-item>
-      <el-form-item prod="password">
-        <el-input type="password" v-model="ruleForm.password" autocomplete="off" placeholder="请输入密码"></el-input>
+      <el-form-item prod="password" :rules="[
+        { required: true, message: '密码不能为空', trigger: 'blur' }
+      ]">
+        <el-input type="password" v-model="ruleForm.password" placeholder="请输入密码"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loding="logining">Login</el-button>
@@ -16,7 +20,7 @@
 </template>
 
 <script>
-import { adminLogin } from '../request/api'
+// import { adminLogin } from '../request/api'
 export default {
   name: 'login',
   data () {
@@ -25,14 +29,6 @@ export default {
       ruleForm: {
         account: 'admin',
         password: '123456'
-      },
-      rules: {
-        account: [
-          { required: true, message: '账号不能为空', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '密码不能为空', trigger: 'blur' }
-        ]
       }
     }
   },
@@ -41,50 +37,46 @@ export default {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           this.logining = true
-          // let loginParams = { username: this.ruleForm.account, password: this.ruleForm.password }
-          // requestLogin(loginParams).then(data => {
-          //   this.logining = false;
-          //   let { msg, code, user } = data;
-          //   if (code !== 200) {
+          // adminLogin({
+          //   account: this.ruleForm.account,
+          //   password: this.ruleForm.password
+          // }).then(res => {
+          //   console.log(res)
+          //   if (!res.code) {
           //     this.$message({
-          //       message: msg,
-          //       type: 'error'
-          //     });
+          //       message: `欢迎回来${this.ruleForm.account}!`,
+          //       type: 'success'
+          //     })
+          //     sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
+          //     this.logining = false
+          //     this.$router.push({ path: '/dashboard' })
           //   } else {
-          //     sessionStorage.setItem('user', JSON.stringify(user));
-          //     this.$router.push({ path: '/table' });
+          //     this.$message.error(res.data.msg)
+          //     this.logining = false
           //   }
-          // });
-          adminLogin({
-            account: this.ruleForm.account,
-            password: this.ruleForm.password
-          }).then(res => {
-            console.log(res)
-            if (!res.code) {
-              this.$message({
-                message: `欢迎回来${this.ruleForm.account}!`,
-                type: 'success'
-              })
-              sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
-              this.logining = false
-              this.$router.push({ path: '/dashboard' })
-            } else {
-              this.$message.error(res.data.msg)
-              this.logining = false
-            }
-          })
-          // if (this.ruleForm.account === 'admin' && this.ruleForm.password === '123456') {
-          //   this.$message({
-          //     message: `欢迎回来${this.ruleForm.account}!`,
-          //     type: 'success'
-          //   })
-          //   sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
-          //   this.logining = false
-          //   this.$router.push({ path: '/dashboard' })
-          // } else {
-          //   this.$message.error('账号或密码错误')
-          //   this.logining = false
-          // }
+          // })
+          if (!this.ruleForm.account) {
+            this.$message.error('账号不能为空')
+            return false
+          }
+          if (!this.ruleForm.password) {
+            this.$message.error('密码不能为空')
+            return false
+          }
+          if (this.ruleForm.account === 'admin' && this.ruleForm.password === '123456') {
+            this.$message({
+              message: `欢迎回来${this.ruleForm.account}!`,
+              type: 'success'
+            })
+            sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
+            this.$store.commit('checkAdminType', 'super')
+            // console.log(this.$store.state.logined)
+            this.logining = false
+            this.$router.push({ path: '/dashboard' })
+          } else {
+            this.$message.error('账号或密码错误')
+            this.logining = false
+          }
         } else {
           this.logining = false
           console.log('error submit!!')
