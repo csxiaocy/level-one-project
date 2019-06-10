@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { adminLogin } from '../request/api'
 export default {
   name: 'login',
   data () {
@@ -54,18 +55,36 @@ export default {
           //     this.$router.push({ path: '/table' });
           //   }
           // });
-          if (this.ruleForm.account === 'admin' && this.ruleForm.password === '123456') {
-            this.$message({
-              message: `欢迎回来${this.ruleForm.account}!`,
-              type: 'success'
-            })
-            sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
-            this.logining = false
-            this.$router.push({ path: '/dashboard' })
-          } else {
-            this.$message.error('账号或密码错误')
-            this.logining = false
-          }
+          adminLogin({
+            account: this.ruleForm.account,
+            password: this.ruleForm.password
+          }).then(res => {
+            console.log(res)
+            if (!res.code) {
+              this.$message({
+                message: `欢迎回来${this.ruleForm.account}!`,
+                type: 'success'
+              })
+              sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
+              this.logining = false
+              this.$router.push({ path: '/dashboard' })
+            } else {
+              this.$message.error(res.data.msg)
+              this.logining = false
+            }
+          })
+          // if (this.ruleForm.account === 'admin' && this.ruleForm.password === '123456') {
+          //   this.$message({
+          //     message: `欢迎回来${this.ruleForm.account}!`,
+          //     type: 'success'
+          //   })
+          //   sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
+          //   this.logining = false
+          //   this.$router.push({ path: '/dashboard' })
+          // } else {
+          //   this.$message.error('账号或密码错误')
+          //   this.logining = false
+          // }
         } else {
           this.logining = false
           console.log('error submit!!')
