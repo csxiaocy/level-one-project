@@ -2,18 +2,16 @@
   <section style="margin-top: 20px;">
     <div class="notice-form">
       <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="通知内容">
-          <el-input type="textarea" v-model="form.message"></el-input>
+        <el-form-item label="通知标题">
+          <el-input v-model="title"></el-input>
         </el-form-item>
-        <el-form-item label="发布时间">
+        <el-form-item label="通知内容">
+          <el-input type="textarea" v-model="content"></el-input>
+        </el-form-item>
+        <el-form-item label="发布日期">
           <el-col :span="11">
-            <el-date-picker type="date" placeholder="选择日期" v-model="form.date"
-            @change="dateFormat" format="yyyy-MM-dd" style="width: 100%;">
+            <el-date-picker type="date" placeholder="选择日期" v-model="date" style="width: 100%;">
             </el-date-picker>
-          </el-col>
-          <el-col class="line" :span="2">&nbsp;&nbsp;&nbsp;—</el-col>
-          <el-col :span="11">
-            <el-time-picker placeholder="选择时间" v-model="form.time" style="width: 100%;"></el-time-picker>
           </el-col>
         </el-form-item>
         <el-form-item>
@@ -23,11 +21,16 @@
     </div>
     <el-divider style="margin-top: 20px;"><i class="el-icon-time"></i></el-divider>
     <div class="block" style="margin-top: 40px;">
+      <!-- 时间轴 -->
       <el-timeline>
         <el-timeline-item v-for="(notice, index) in noticeList" :key="index" :timestamp="notice.date" placement="top">
           <el-card>
-            <h4>{{ notice.message }}</h4>
-            <p>{{ notice.sender + " 发布于 " + notice.date + " " + notice.time }}</p>
+            <!-- 标题 -->
+            <h3>{{ notice.title }}</h3>
+            <!-- 内容 -->
+            <p>{{ notice .content }}</p>
+            <!-- 发布人及时间 -->
+            <p><b>{{ notice.sender }}</b>{{" 发布于 " + notice.date }}</p>
           </el-card>
         </el-timeline-item>
       </el-timeline>
@@ -40,63 +43,58 @@ export default {
   name: 'notice',
   data () {
     return {
-      form: {
-        message: '',
-        date: '',
-        time: '',
-        sender: 'admin',
-      },
+      title: '',
+      content: '',
+      sender: 'admin',
+      date: '',
       noticeList: [
         {
           date: '2019-06-08',
-          message: '六一儿童节快乐!',
+          title: '六一儿童节快乐!',
+          content: '六一儿童节快乐!',
           sender: 'admin',
-          time: '03:30',
         },
         {
           date: '2019-06-07',
-          message: '六一儿童节快乐!',
+          title: '六一儿童节快乐!',
+          content: '六一儿童节快乐!',
           sender: 'admin',
-          time: '03:30',
         },
         {
           date: '2019-06-06',
-          message: '六一儿童节快乐!',
+          title: '六一儿童节快乐!',
+          content: '六一儿童节快乐!',
           sender: 'admin',
-          time: '03:30',
         },
         {
           date: '2019-06-05',
-          message: '六一儿童节快乐!',
+          title: '六一儿童节快乐!',
+          content: '六一儿童节快乐!',
           sender: 'admin',
-          time: '03:30',
         },
       ]
     }
   },
   methods: {
-    dateFormat(date) {
-      this.form.date = date;
-    },
     onSubmit() {
-      if (this.form.message === '') {
+      if (this.title === '') {
+        this.$message.error('通知标题不能为空');
+        return;
+      }
+      if (this.content === '') {
         this.$message.error('通知内容不能为空');
         return;
       }
-      if (this.form.date === '') {
-        this.$message.error('日期不能为空');
+      if (this.date === '') {
+        this.$message.error('通知日期不能为空');
         return;
       }
-      if (this.form.time === '') {
-        this.$message.error('时间不能为空');
-        return;
-      }
-      let form = {}
-      form.date = this.form.date;
-      form.message = this.form.message;
-      form.sender = this.form.sender;
-      form.time = this.form.time;
-      this.noticeList.splice(0, 0, this.form);
+      let notice = {};
+      notice.title = this.title;
+      notice.content = this.content;
+      notice.sender = this.sender;
+      notice.date = this.moment(this.date).format("YYYY-MM-DD");
+      this.noticeList.splice(0, 0, notice);
     }
   }
 }

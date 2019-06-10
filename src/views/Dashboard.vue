@@ -39,7 +39,7 @@
         <div class="card-panel-description">
           <div class="card-panel-text">
             <!-- Purchases -->
-            待审核
+            家族数量
           </div>
           <count-to :start-val="0" :end-val="auditNum" :duration="3200" class="card-panel-num" />
         </div>

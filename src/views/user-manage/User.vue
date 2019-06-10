@@ -4,14 +4,15 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;margin-top: 20px;">
 			<el-form :inline="true">
 				<el-form-item>
-					<el-input placeholder="姓名"></el-input>
+					<el-input v-model="userName" placeholder="请输入姓名" v-if="checkUserWay==='user'"></el-input>
+					<el-input v-model="userId" placeholder="请输入ID" v-if="checkUserWay==='id'"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-dropdown split-button type="primary" @click="getUsers">
+					<el-dropdown split-button type="primary" @click="getUsers" @command="changeCheckWay">
 						查询
 						<el-dropdown-menu slot="dropdown">
-							<el-dropdown-item>按姓名查询</el-dropdown-item>
-							<el-dropdown-item>按ID查询</el-dropdown-item>
+							<el-dropdown-item command="user">按姓名查询</el-dropdown-item>
+							<el-dropdown-item command="id">按ID查询</el-dropdown-item>
 						</el-dropdown-menu>
 					</el-dropdown>
 				</el-form-item>
@@ -19,48 +20,49 @@
 		</el-col>
     <!-- 列表 -->
 		<el-table
-		:data="tableData"
-    style="width: 100%">
-    	<el-table-column type="expand">
-      	<template slot-scope="props">
-        	<el-form label-position="left" inline class="demo-table-expand">
-          	<el-form-item label="商品名称">
-            	<span>{{ props.row.name }}</span>
-          	</el-form-item>
-          	<el-form-item label="所属店铺">
-            	<span>{{ props.row.shop }}</span>
-          	</el-form-item>
-          	<el-form-item label="商品 ID">
-            	<span>{{ props.row.id }}</span>
-          	</el-form-item>
-          	<el-form-item label="店铺 ID">
-            	<span>{{ props.row.shopId }}</span>
-          	</el-form-item>
-          	<el-form-item label="商品分类">
-            	<span>{{ props.row.category }}</span>
-          	</el-form-item>
-          	<el-form-item label="店铺地址">
-            	<span>{{ props.row.address }}</span>
-          	</el-form-item>
-          	<el-form-item label="商品描述">
-            	<span>{{ props.row.desc }}</span>
-          	</el-form-item>
-        	</el-form>
-      	</template>
-    	</el-table-column>
+    :data="tableData"
+    border
+    style="width: 100%;">
     	<el-table-column
-      	label="商品 ID"
-      	prop="id">
+      	fixed
+      	prop="date"
+      	label="id"
+      	width="150">
     	</el-table-column>
-    	<el-table-column
-    	  label="商品名称"
-      	prop="name">
-    	</el-table-column>
-    	<el-table-column
-      	label="描述"
-      	prop="desc">
-    	</el-table-column>
-  	</el-table>
+			<el-table-column
+				prop="name"
+				label="姓名"
+				width="120">
+			</el-table-column>
+			<el-table-column
+				prop="sex"
+				label="性别"
+				width="120">
+			</el-table-column>
+			<el-table-column
+				prop="familyId"
+				label="家族ID"
+				width="120">
+			</el-table-column>
+			<el-table-column
+				prop="birthday"
+				label="生日"
+				width="120">
+			</el-table-column>
+			<el-table-column
+				prop="email"
+				label="email"
+				width="300">
+			</el-table-column>
+			<el-table-column
+				fixed="right"
+				label="操作"
+				width="100">
+				<template slot-scope="scope">
+					<el-button @click="handleClick(scope.row)" type="text" size="small">查看详情</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
   </section>
 </template>
 
@@ -68,27 +70,57 @@
 export default {
   name: 'user',
   data () {
-    return {}
+    return {
+			checkUserWay: 'user',
+			userName: '',
+			userId: '',
+			tableData: [{
+        date: '2016-05-02',
+        name: '王小虎',
+        sex: '上海',
+        familyId: '普陀区',
+        email: '上海市普陀区金沙江路 1518 弄',
+        birthday: 200333
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        sex: '上海',
+        familyId: '普陀区',
+        email: '上海市普陀区金沙江路 1517 弄',
+        birthday: 200333
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        sex: '上海',
+        familyId: '普陀区',
+        email: '上海市普陀区金沙江路 1519 弄',
+        birthday: 200333
+      }, {
+        date: '2016-05-03',
+        name: '王小虎',
+        sex: '上海',
+        familyId: '普陀区',
+        email: '上海市普陀区金沙江路 1516 弄',
+        birthday: 200333
+      }]
+		}
   },
 	methods: {
-		handleClick(choose) {
-      alert('button click ' + choose);
+		changeCheckWay(command) {
+			this.checkUserWay = command;
+			this.userName = '';
+			this.userId = '';
+		},
+		getUsers() {
+			this.$message.error('check user');
+		},
+		handleClick(row) {
+      console.log(row);
     }
 	},
 }
 </script>
 
 <style scoped>
-.demo-table-expand {
-  font-size: 0;
-}
-.demo-table-expand label {
-  width: 90px;
-  color: #99a9bf;
-}
-.demo-table-expand .el-form-item {
-  margin-right: 0;
-  margin-bottom: 0;
-  width: 50%;
-}
+
 </style>
