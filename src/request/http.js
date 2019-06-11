@@ -14,17 +14,20 @@ axios.defaults.timeout = 5000
 // 设置post请求头
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8;'
 
+axios.defaults.withCredentials = true
+
 // 请求拦截
-// axios.interceptors.request.use(
-//   config => {
-//     const token = store.state.token
-//     token && (config.headers.Authorization = token)
-//     return config
-//   },
-//   error => {
-//     return Promise.error(error)
-//   }
-// )
+axios.interceptors.request.use(
+  config => {
+    // 带上token
+    const token = JSON.parse(sessionStorage.getItem('user')) || {}
+    config.headers.Authorization = token.loginId
+    return config
+  },
+  error => {
+    return Promise.error(error)
+  }
+)
 
 // 响应拦截器
 axios.interceptors.response.use(

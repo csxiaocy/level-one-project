@@ -2,4 +2,4 @@
 import { get, post } from './http'
 
 // 登录接口
-export const adminLogin = p => post('/login', p)
+export const adminLogin = p => get('/login.action', p)

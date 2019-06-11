@@ -8,6 +8,7 @@ import Moment from 'moment'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/iconfont.css'
+import VueI18n from 'vue-i18n'
 
 Vue.config.productionTip = false
 
@@ -15,10 +16,19 @@ Vue.prototype.moment = Moment
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
+Vue.use(VueI18n)
 
 const router = new VueRouter({
   mode: 'history',
   routes
+})
+
+const i18n = new VueI18n({
+  locale: 'en',
+  messages: {
+    'zh': require('./common/lang/zh'),
+    'en': require('./common/lang/en')
+  }
 })
 
 router.beforeEach((to, from, next) => {
@@ -36,5 +46,6 @@ router.beforeEach((to, from, next) => {
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App)
 }).$mount('#app')

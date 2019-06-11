@@ -15,8 +15,9 @@
 				<el-dropdown trigger="hover">
 					<span class="el-dropdown-link userinfo-inner"><img src="../assets/default-avatar.png" />admin</span>
 					<el-dropdown-menu slot="dropdown">
-						<el-dropdown-item>我的消息</el-dropdown-item>
-						<el-dropdown-item>设置</el-dropdown-item>
+						<!-- 我的消息 -->
+						<el-dropdown-item>{{$t("m.common.notice")}}</el-dropdown-item>
+						<el-dropdown-item>{{$t("m.common.setting")}}</el-dropdown-item>
 						<el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
@@ -76,6 +77,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+// TODO 国际化 切换中英文
 
 export default {
   name: 'home',

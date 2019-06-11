@@ -13,14 +13,15 @@
         <el-input type="password" v-model="ruleForm.password" placeholder="请输入密码"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loding="logining">Login</el-button>
+        <!-- <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loding="logining">Login</el-button> -->
+        <el-button type="primary" style="width:100%;" @click="handleLogin" :loding="logining">Login</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-// import { adminLogin } from '../request/api'
+import { adminLogin } from '../request/api'
 export default {
   name: 'login',
   data () {
@@ -28,60 +29,63 @@ export default {
       logining: false,
       ruleForm: {
         account: 'admin',
-        password: '123456'
+        password: '123456',
+        loginId: -1,
+        adminType: ''
       }
     }
   },
   methods: {
-    handleSubmit2 (ev) {
-      this.$refs.ruleForm.validate((valid) => {
-        if (valid) {
-          this.logining = true
-          // adminLogin({
-          //   account: this.ruleForm.account,
-          //   password: this.ruleForm.password
-          // }).then(res => {
-          //   console.log(res)
-          //   if (!res.code) {
-          //     this.$message({
-          //       message: `欢迎回来${this.ruleForm.account}!`,
-          //       type: 'success'
-          //     })
-          //     sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
-          //     this.logining = false
-          //     this.$router.push({ path: '/dashboard' })
-          //   } else {
-          //     this.$message.error(res.data.msg)
-          //     this.logining = false
-          //   }
-          // })
-          if (!this.ruleForm.account) {
-            this.$message.error('账号不能为空')
-            return false
-          }
-          if (!this.ruleForm.password) {
-            this.$message.error('密码不能为空')
-            return false
-          }
-          if (this.ruleForm.account === 'admin' && this.ruleForm.password === '123456') {
+    handleLogin () {
+      this.logining = true
+      if (!this.ruleForm.account) {
+        this.$message.error('账号不能为空')
+        return false
+      }
+      if (!this.ruleForm.password) {
+        this.$message.error('密码不能为空')
+        return false
+      }
+      if (this.ruleForm.account === 'admin' && this.ruleForm.password === '123456') {
+        this.$message({
+          message: `欢迎回来${this.ruleForm.account}!`,
+          type: 'success'
+        })
+        sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
+        this.$store.commit('judgeAdminType', 'super')
+        // console.log(this.$store.state.adminType)
+        this.logining = false
+        this.$router.push({ path: '/dashboard' })
+      } else {
+        this.$message.error('账号或密码错误')
+        this.logining = false
+      }
+      adminLogin({
+        Email: this.ruleForm.account,
+        password: this.ruleForm.password
+      }).then(res => {
+        if (res.status === 200) {
+          let data = res.data
+          if (data.type !== 'familyMember') {
+            let adminType = data.type === 'admin' ? 'super' : 'admin'
+            this.$store.commit('judgeAdminType', adminType)
+            this.ruleForm.adminType = adminType
             this.$message({
               message: `欢迎回来${this.ruleForm.account}!`,
               type: 'success'
             })
+            this.ruleForm.loginId = data.id
             sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
-            this.$store.commit('checkAdminType', 'super')
-            // console.log(this.$store.state.logined)
             this.logining = false
             this.$router.push({ path: '/dashboard' })
-          } else {
-            this.$message.error('账号或密码错误')
-            this.logining = false
+            return true
           }
+          this.$message.error('非管理员账号，无法登录!')
         } else {
-          this.logining = false
-          console.log('error submit!!')
-          return false
+          this.$message.error(res.describe)
         }
+      }).catch(err => {
+        console.log(err)
       })
     }
   }
