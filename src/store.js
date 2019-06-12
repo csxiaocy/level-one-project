@@ -7,6 +7,11 @@ export default new Vuex.Store({
   state: {
     adminType: ''
   },
+  getters: {
+    getAdminType: function (state) {
+      return state.adminType
+    }
+  },
   mutations: {
     judgeAdminType (state, type) {
       // 'super' / 'admin'

@@ -31,7 +31,7 @@ export default {
         account: 'admin',
         password: '123456',
         loginId: -1,
-        adminType: ''
+        adminType: 'super'
       }
     }
   },

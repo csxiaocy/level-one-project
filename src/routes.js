@@ -26,6 +26,7 @@ let routes = [
     component: Home,
     iconCls: 'el-icon-data-analysis',
     leaf: true,
+    permission: ['super'],
     children: [
       { path: '/dashboard', component: Dashboard, name: 'm.common.dashboard' }
     ]
@@ -35,6 +36,7 @@ let routes = [
     name: 'm.common.manage',
     component: Home,
     iconCls: 'el-icon-s-promotion',
+    permission: ['super'],
     children: [
       { path: '/user', component: User, name: 'm.common.manage' },
       { path: '/admin', component: Admin, name: 'm.common.adminManage' }
@@ -46,6 +48,7 @@ let routes = [
     component: Home,
     iconCls: 'el-icon-chat-square',
     leaf: true,
+    permission: ['super'],
     children: [
       { path: '/notice', component: Notice, name: 'm.common.notice' }
     ]
@@ -56,6 +59,7 @@ let routes = [
     component: Home,
     iconCls: 'el-icon-setting',
     leaf: true,
+    permission: ['super'],
     children: [
       { path: '/setting', component: Setting, name: 'm.common.setting' }
     ]

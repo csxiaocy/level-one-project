@@ -39,7 +39,7 @@
 				<!--导航菜单-->
 				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect"
 					 unique-opened router v-show="!collapsed">
-					<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
+					<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden && (item.permission.indexOf(adminType) > -1)">
 						<el-submenu :index="index+''" v-if="!item.leaf">
 							<template slot="title"><i :class="item.iconCls"></i>{{ $t(item.name) }}</template>
 							<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{ $t(child.name) }}</el-menu-item>
@@ -96,18 +96,22 @@ export default {
       collapsed: false,
       user: {
         name: 'admin'
-      }
+			},
+			adminType: ''
     }
   },
   mounted() {
-    let user = sessionStorage.getItem('user');
+    let user = sessionStorage.getItem('user')
     if (user) {
-      user = JSON.parse(user);
-      this.sysUserName = user.name || '';
-      this.sysUserAvatar = user.avatar || '';
-    }
+      user = JSON.parse(user)
+      this.sysUserName = user.name || ''
+			this.sysUserAvatar = user.avatar || ''
+			this.adminType = user.adminType
+		}
   },
   methods: {
+		handleopen () {},
+		handleclose () {},
 		changeLangZh () {
 			this.$i18n.locale = 'zh'
 		},
