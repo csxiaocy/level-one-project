@@ -4,15 +4,15 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;margin-top: 20px;">
 			<el-form :inline="true">
 				<el-form-item>
-					<el-input v-model="userName" placeholder="请输入姓名" v-if="checkUserWay==='user'"></el-input>
-					<el-input v-model="userId" placeholder="请输入ID" v-if="checkUserWay==='id'"></el-input>
+					<el-input v-model="userName" :placeholder="$t('m.message.inputName')" v-if="checkUserWay==='user'"></el-input>
+					<el-input v-model="userId" :placeholder="$t('m.message.inputID')" v-if="checkUserWay==='id'"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-dropdown split-button type="primary" @click="getUsers" @command="changeCheckWay">
-						查询
+						{{ $t('m.message.search') }}
 						<el-dropdown-menu slot="dropdown">
-							<el-dropdown-item command="user">按姓名查询</el-dropdown-item>
-							<el-dropdown-item command="id">按ID查询</el-dropdown-item>
+							<el-dropdown-item command="user">{{ $t('m.message.searchByName') }}</el-dropdown-item>
+							<el-dropdown-item command="id">{{ $t('m.message.searchById') }}</el-dropdown-item>
 						</el-dropdown-menu>
 					</el-dropdown>
 				</el-form-item>
@@ -118,6 +118,9 @@ export default {
       console.log(row);
     }
 	},
+	computed: {
+
+	}
 }
 </script>
 

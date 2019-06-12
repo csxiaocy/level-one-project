@@ -2,14 +2,25 @@
 <template>
   <el-row class="container">
 		<el-col :span="24" class="header">
-			<el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
+			<el-col :span="5" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
 				<!-- logo -->
 				<img v-show="!collapsed" src="../assets/logo.png" class="logo-img">
 			</el-col>
-			<el-col :span="10">
+			<el-col :span="14">
 				<div class="tools" @click.prevent="collapse">
-					<i :class="collapsed?'el-icon-s-unfold':'el-icon-s-fold'"></i>
+					<i class="el-icon-s-operation"></i>
+					<!-- <i :class="collapsed?'el-icon-s-unfold':'el-icon-s-fold'"></i> -->
 				</div>
+			</el-col>
+			<el-col :span="1">
+				<el-dropdown trigger="hover">
+					<!-- 切换中英文 -->
+					<i class="iconfont" style="font-size: 24px;color: #fff;">&#xe602;</i>
+					<el-dropdown-menu slot="dropdown">
+						<el-dropdown-item @click.native="changeLangZh">中文</el-dropdown-item>
+						<el-dropdown-item @click.native="changeLangEn">English</el-dropdown-item>
+					</el-dropdown-menu>
+				</el-dropdown>
 			</el-col>
 			<el-col :span="4" class="userinfo">
 				<el-dropdown trigger="hover">
@@ -18,7 +29,7 @@
 						<!-- 我的消息 -->
 						<el-dropdown-item>{{$t("m.common.notice")}}</el-dropdown-item>
 						<el-dropdown-item>{{$t("m.common.setting")}}</el-dropdown-item>
-						<el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+						<el-dropdown-item divided @click.native="logout">{{ $t('m.common.logout') }}</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
 			</el-col>
@@ -30,10 +41,10 @@
 					 unique-opened router v-show="!collapsed">
 					<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
 						<el-submenu :index="index+''" v-if="!item.leaf">
-							<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
-							<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
+							<template slot="title"><i :class="item.iconCls"></i>{{ $t(item.name) }}</template>
+							<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{ $t(child.name) }}</el-menu-item>
 						</el-submenu>
-						<el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>
+						<el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{ $t(item.children[0].name) }}</el-menu-item>
 					</template>
 				</el-menu>
 				<!--导航菜单-折叠后-->
@@ -56,10 +67,10 @@
 			<section class="content-container">
 				<div class="grid-content bg-purple-light">
 					<el-col :span="24" class="breadcrumb-container">
-						<strong class="title">{{$route.name}}</strong>
+						<strong class="title">{{ $t($route.name) }}</strong>
 						<el-breadcrumb separator="/" class="breadcrumb-inner">
 							<el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
-								{{ item.name }}
+								{{ $t(item.name) }}
 							</el-breadcrumb-item>
 						</el-breadcrumb>
 					</el-col>
@@ -77,7 +88,6 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-// TODO 国际化 切换中英文
 
 export default {
   name: 'home',
@@ -98,12 +108,12 @@ export default {
     }
   },
   methods: {
-    handleopen() {
-      //
-    },
-    handleclose() {
-      //
-    },
+		changeLangZh () {
+			this.$i18n.locale = 'zh'
+		},
+		changeLangEn () {
+			this.$i18n.locale = 'en'
+		},
     handleselect: function (a, b) {
     },
     collapse: function () {
@@ -112,7 +122,7 @@ export default {
     },
     logout: function () {
       const that = this
-      this.$confirm('确认退出登录吗?', '提示', {
+      this.$confirm(this.$t('m.common.sureLogout'), this.$t('m.common.tip'), {
       }).then(() => {
         sessionStorage.removeItem('user')
         that.$router.push('/login')

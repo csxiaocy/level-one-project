@@ -1,11 +1,11 @@
 <template>
   <section>
     <el-form :inline="true" :model="formInline" class="demo-form-inline" style="margin-top: 24px;">
-      <el-form-item label="家族ID">
-        <el-input v-model="familyId" placeholder="请输入要查询的家族ID"></el-input>
+      <el-form-item :label="$t('m.message.family')">
+        <el-input v-model="familyId" :placeholder="$t('m.message.inputFamilyID')"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="checkFamily">查询</el-button>
+        <el-button type="primary" @click="checkFamily">{{ $t('m.message.search') }}</el-button>
       </el-form-item>
     </el-form>
     <el-card class="box-card" style="margin-top: 20px;" v-show="checked">

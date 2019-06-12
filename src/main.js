@@ -24,7 +24,7 @@ const router = new VueRouter({
 })
 
 const i18n = new VueI18n({
-  locale: 'en',
+  locale: 'zh',
   messages: {
     'zh': require('./common/lang/zh'),
     'en': require('./common/lang/en')

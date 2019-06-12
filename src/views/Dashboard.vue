@@ -9,7 +9,7 @@
         <div class="card-panel-description">
           <div class="card-panel-text">
             <!-- New Visits -->
-            用户数量
+            {{ $t('m.common.dashboard_userNum') }}
           </div>
           <count-to :start-val="0" :end-val="userNum" :duration="2600" class="card-panel-num" />
         </div>
@@ -24,7 +24,7 @@
         <div class="card-panel-description">
           <div class="card-panel-text">
             <!-- Messages -->
-            管理员数量
+            {{ $t('m.common.dashboard_adminNum') }}
           </div>
           <count-to :start-val="0" :end-val="adminNum" :duration="3000" class="card-panel-num" />
         </div>
@@ -39,7 +39,7 @@
         <div class="card-panel-description">
           <div class="card-panel-text">
             <!-- Purchases -->
-            家族数量
+            {{ $t('m.common.dashboard_familyNum') }}
           </div>
           <count-to :start-val="0" :end-val="auditNum" :duration="3200" class="card-panel-num" />
         </div>
@@ -54,7 +54,7 @@
         <div class="card-panel-description">
           <div class="card-panel-text">
             <!-- Shoppings -->
-            通知数量
+            {{ $t('m.common.dashboard_noticeNum') }}
           </div>
           <count-to :start-val="0" :end-val="msgNum" :duration="3600" class="card-panel-num" />
         </div>

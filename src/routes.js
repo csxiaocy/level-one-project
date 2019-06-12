@@ -27,17 +27,17 @@ let routes = [
     iconCls: 'el-icon-data-analysis',
     leaf: true,
     children: [
-      { path: '/dashboard', component: Dashboard, name: '数据统计' }
+      { path: '/dashboard', component: Dashboard, name: 'm.common.dashboard' }
     ]
   },
   {
     path: '/',
-    name: '用户管理',
+    name: 'm.common.manage',
     component: Home,
     iconCls: 'el-icon-s-promotion',
     children: [
-      { path: '/user', component: User, name: '用户管理' },
-      { path: '/admin', component: Admin, name: '管理员管理' }
+      { path: '/user', component: User, name: 'm.common.manage' },
+      { path: '/admin', component: Admin, name: 'm.common.adminManage' }
     ]
   },
   {
@@ -47,7 +47,7 @@ let routes = [
     iconCls: 'el-icon-chat-square',
     leaf: true,
     children: [
-      { path: '/notice', component: Notice, name: '发布通知' }
+      { path: '/notice', component: Notice, name: 'm.common.notice' }
     ]
   },
   {
@@ -57,7 +57,7 @@ let routes = [
     iconCls: 'el-icon-setting',
     leaf: true,
     children: [
-      { path: '/setting', component: Setting, name: '设置' }
+      { path: '/setting', component: Setting, name: 'm.common.setting' }
     ]
   },
   {
