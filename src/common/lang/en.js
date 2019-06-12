@@ -1,5 +1,6 @@
 export const m = {
   common: {
+    myMessage: 'My message',
     logout: 'logout',
     tip: 'Tip',
     sureLogout: 'Are you sure to logout?',

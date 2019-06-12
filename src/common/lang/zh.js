@@ -1,5 +1,6 @@
 export const m = {
   common: {
+    myMessage: '我的消息',
     logout: '退出登录',
     tip: '提示',
     sureLogout: '确认退出登录吗?',
