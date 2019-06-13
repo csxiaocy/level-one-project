@@ -1,6 +1,6 @@
 <template>
   <section>
-    Setting.vue
+    <p style="margin-top: 10px;">暂无相关内容</p>
   </section>
 </template>
 

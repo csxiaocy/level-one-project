@@ -28,10 +28,14 @@ export default {
     return {
       logining: false,
       ruleForm: {
-        account: 'admin',
-        password: '123456',
-        loginId: -1,
-        adminType: 'super'
+        // account: 'admin',
+        // password: '123456',
+        // loginId: 0,
+        // adminType: 'admin'
+        account: '',
+        password: '',
+        loginId: '',
+        adminType: ''
       }
     }
   },
@@ -46,20 +50,20 @@ export default {
         this.$message.error('密码不能为空')
         return false
       }
-      if (this.ruleForm.account === 'admin' && this.ruleForm.password === '123456') {
-        this.$message({
-          message: `欢迎回来${this.ruleForm.account}!`,
-          type: 'success'
-        })
-        sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
-        this.$store.commit('judgeAdminType', 'super')
-        // console.log(this.$store.state.adminType)
-        this.logining = false
-        this.$router.push({ path: '/dashboard' })
-      } else {
-        this.$message.error('账号或密码错误')
-        this.logining = false
-      }
+      // if (this.ruleForm.account === 'admin' && this.ruleForm.password === '123456') {
+      //   this.$message({
+      //     message: `欢迎回来${this.ruleForm.account}!`,
+      //     type: 'success'
+      //   })
+      //   sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
+      //   this.$store.commit('judgeAdminType', this.ruleForm.adminType)
+      //   // console.log(this.$store.state.adminType)
+      //   this.logining = false
+      //   this.$router.push({ path: '/dashboard' })
+      // } else {
+      //   this.$message.error('账号或密码错误')
+      //   this.logining = false
+      // }
       adminLogin({
         Email: this.ruleForm.account,
         password: this.ruleForm.password
@@ -78,9 +82,9 @@ export default {
             sessionStorage.setItem('user', JSON.stringify(this.ruleForm))
             this.logining = false
             this.$router.push({ path: '/dashboard' })
-            return true
+          } else {
+            this.$message.error('非管理员账号，无法登录!')
           }
-          this.$message.error('非管理员账号，无法登录!')
         } else {
           this.$message.error(res.describe)
         }

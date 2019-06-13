@@ -42,6 +42,7 @@
 		</el-form>
     <!-- 列表 -->
 		<el-table
+    v-if="isCheck"
     :data="tableData"
     border
     style="width: 100%;">
@@ -92,9 +93,10 @@
 import { getUserInfoList, searchUserByName, getSelfInfo, addFamilyMember } from '../../request/api'
 
 export default {
-  name: 'user',
+  name: 'FamilyUser',
   data () {
     return {
+      isCheck: false,
 			checkUserWay: 'user',
 			userName: '',
 			userId: '',
@@ -117,10 +119,14 @@ export default {
 			this.userId = ''
 		},
 		getUsers() {
-			this.isAddingUser = false
+      this.isAddingUser = false
+      this.isCheck = true
 			// 根据姓名搜索用户
 			if (this.checkUserWay === 'user') {
-				if (!this.userName) return
+				if (!this.userName) {
+          this.isCheck = false
+          return
+        }
 				searchUserByName({
 					name: this.userName
 				}).then(res => {
@@ -147,7 +153,10 @@ export default {
 			}
 			// 根据ID搜索用户
 			if (this.checkUserWay === 'id') {
-				if (!this.userId) return
+				if (!this.userId) {
+          this.isCheck = false
+          return
+        }
 				getSelfInfo({
 					id: this.userId
 				}).then(res => {
@@ -213,31 +222,6 @@ export default {
 				}
 			}).catch({})
 		}
-	},
-	mounted () {
-		getUserInfoList()
-			.then(res => {
-				if (res.status === 200) {
-					let data = res.data
-					let user
-					this.tableData = []
-					data.forEach(e => {
-						user = {}
-						user.id = e.id
-						user.name = e.name
-						user.sex = e.sex
-						user.familyId = e.familyId
-						user.email = e.mail
-						user.birthday = `${e.birth_year}-${e.birth_month}-${e.birth_day}`
-						this.tableData.push(user)
-					})
-				} else {
-					this.$message.error(res.describe)
-				}
-			})
-			.catch(err => {
-				console.log('err'+err)
-			})
 	}
 }
 </script>
